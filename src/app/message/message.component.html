@@ -1,0 +1,175 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div *ngIf="!messages">
+  <img src="https://cdn.dribbble.com/users/137792/screenshots/3428761/mikaflakes_mailicon_2.gif" style="max-width: 900px;
+    max-height: 900px; position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    margin:auto;">
+</div>
+<div *ngIf="messages">
+
+
+  <nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+      <img
+        src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MTIgNjEyIj4KICA8ZyBzb2RpcG9kaTpkb2NuYW1lPSJ0d2l0dGVyX2Jvb3RzdHJhcF9sb2dvLnN2ZyIgaW5rc2NhcGU6dmVyc2lvbj0iMC40OC4xIHI5NzYwIiB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyIgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIiB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIiB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSI+CiAgICA8cGF0aCBmaWxsPSIjNTYzRDdDIiBkPSJNNjEyIDUxMGMwIDU2LjEtNDUuOSAxMDItMTAyIDEwMkgxMDJDNDUuOSA2MTIgMCA1NjYuMSAwIDUxMFYxMDJDMCA0NS45IDQ1LjkgMCAxMDIgMGg0MDhjNTYuMSAwIDEwMiA0NS45IDEwMiAxMDJ2NDA4eiIvPgogICAgPHBhdGggZmlsbD0iI0ZGRiIgZD0iTTE2Ni4zIDEzM2gxNzMuNWMzMiAwIDU3LjcgNy4zIDc3IDIyczI5IDM2LjggMjkgNjYuNWMwIDE4LTQuNCAzMy40LTEzLjIgNDYuMi04LjggMTIuOC0yMS40IDIyLjgtMzcuOCAyOS44djFjMjIgNC43IDM4LjcgMTUuMSA1MCAzMS4yIDExLjMgMTYuMiAxNyAzNi40IDE3IDYwLjggMCAxNC0yLjUgMjcuMS03LjUgMzkuMi01IDEyLjItMTIuOCAyMi43LTIzLjUgMzEuNXMtMjQuMyAxNS44LTQxIDIxLTM2LjUgNy44LTU5LjUgNy44aC0xNjRWMTMzem02Mi41IDE0OS41aDEwMmMxNSAwIDI3LjUtNC4yIDM3LjUtMTIuOHMxNS0yMC44IDE1LTM2LjhjMC0xOC00LjUtMzAuNy0xMy41LTM4cy0yMi0xMS0zOS0xMWgtMTAydjk4LjZ6bTAgMTU2LjVoMTEwLjVjMTkgMCAzMy44LTQuOSA0NC4yLTE0LjggMTAuNS05LjggMTUuOC0yMy44IDE1LjgtNDEuOCAwLTE3LjctNS4yLTMxLjItMTUuOC00MC44cy0yNS4yLTE0LjItNDQuMi0xNC4ySDIyOC44VjQzOXoiLz4KICA8L2c+Cjwvc3ZnPgo="
+        width="30" height="30" class="d-inline-block align-top" alt="">&nbsp;{{title}}
+    </a>
+  </nav>
+  <div class="container mb-3 mt-3">
+    <div class="row">
+      <div class="col-md-8
+">
+        <div class="card">
+          <h4 class="card-header">Latest Messages:</h4>
+          <div class="card-body">
+            <div *ngFor="let message of messages" class="card-body mb-2" style="border-radius: 40px;
+    border: 0.5px solid #d8d8d8;
+    margin-bottom: 0px;">
+              <h4 class="card-title" style="margin-bottom: 2px;
+    margin-top: -10px;">{{convertMessage(message.message)}}</h4>
+              <p class="card-text">{{message.message}}</p>
+              <p class="card-text" style="margin-bottom: -9px;
+    margin-top: -16px;">
+                <small class="text-muted">{{message.time | date:'EEEE, h:mm a'}}</small>
+              </p>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-5">
+                <a (click)="morseActive()" class="btn btn-info" style="color: #ffffff;">Write a Morse message!</a>
+              </div>
+              <div class="col-md-5">
+                <a (click)="normalTextActive()" class="btn btn-success" style="color: #ffffff;">Write a Text
+                  message!</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <img src="http://www.codebug.org.uk/assets/steps/540/image_1.png" class="img-fluid">
+      </div>
+    </div>
+  </div>
+  <div class="container" *ngIf="morseActivated == true">
+    <div class="row">
+      <div class="card border-info col-md-12 mb-2">
+        <div class="card-header">Morse Message</div>
+        <div class="card-body text-info">
+          <div class="row" style="margin-bottom: 20px;">
+            <div class="col-md-2">
+              <button type="button" class="btn btn-info">Morse Click</button>
+            </div>
+            <div class="col-md-1">
+              <button type="button" class="btn btn-info btn-outline-secondary">Next</button>
+            </div>
+            <div>
+              <button type="button" class="btn btn-info btn-outline-secondary">Space</button>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-danger">Clear</button>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-outline-success">Send the current message</button>
+            </div>
+          </div>
+          <h2 class="card-title text-dark">Morse Message</h2>
+          <h2 class="card-title" style="margin-bottom: 20px;">Human Readable</h2>
+          <p class="card-text text-secondary">click "morse" button in less then a 120 ms for .&nbsp;</p>
+          <p class="card-text text-secondary">and longer for -&nbsp;</p>
+          <p class="card-text text-secondary">click "next" to go to next letter&nbsp;</p>
+          <p class="card-text text-secondary">click "space" to go to next word&nbsp;</p>
+          <p class="card-text text-secondary">click "clear" to remove all&nbsp;</p>
+          <p class="card-text text-secondary">click "send" to broadcast message</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container" *ngIf="textActivated == true">
+    <div class="row">
+      <div class="card border-info col-md-12">
+        <div class="card-header">Text Message</div>
+        <div class="card-body text-dark">
+          <div class="row" style="margin-bottom: 20px;">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-1">
+            </div>
+            <div>
+            </div>
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-outline-success">Send the current message</button>
+            </div>
+          </div>
+          <form>
+            <div class="form-group">
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                     placeholder="Message">
+            </div>
+          </form>
+          <h2 class="card-title" style="margin-bottom: 20px;">Morse Message</h2>
+          <p class="card-text text-secondary">click "send" to broadcast message</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--<div style="text-align:center">-->
+  <!--<h1>-->
+  <!--Welcome to {{ title }}!-->
+  <!--</h1>-->
+  <!--</div>-->
+  <!--<div class="row">-->
+  <!--<div class="column">-->
+  <!--<h2>{{messages?.length}} latest messages shown</h2>-->
+  <!--<h4 *ngFor="let message of messages">{{message.time}} - {{convertMessage(message.message)}}</h4>-->
+  <!--</div>-->
+  <!--<div class="column">-->
+  <!--<img alt="Angular Logo" src="http://www.codebug.org.uk/assets/steps/540/image_1.png">-->
+  <!--</div>-->
+
+  <!--</div>-->
+  <!--<ul>-->
+  <!--<div *ngIf="latest">-->
+  <!--<h3>Latest Message Information:</h3>-->
+  <!--<h3>Time: {{latest.time}}</h3>-->
+  <!--<h3>Morse: {{latest.message.toString()}}</h3>-->
+  <!--<h3 style="color: darkblue">Message: {{convertMessage(latest.message)}} </h3>-->
+  <!--</div>-->
+  <!--</ul>-->
+  <!--<hr>-->
+  <!--<hr>-->
+  <!--<hr>-->
+  <!--<div>-->
+  <!--<button class="button1" (mousedown)="morse(true);"-->
+  <!--(mouseup)="morse(false);" ><h2>Morse</h2></button>-->
+  <!--<button class="button2" (click)="next();"><h2>Next</h2></button>-->
+  <!--<button class="button2" (click)="space();"><h2>Space</h2></button>-->
+  <!--<button class="button2" (click)="clear();"><h2>Clear</h2></button>-->
+
+  <!--</div>-->
+
+  <!--<div>-->
+  <!--Human readable message to send:-->
+  <!--<div *ngIf="message">-->
+  <!--<h1>{{message}}</h1>  <h2 style="color: darkblue"> {{convertMessage(humanReadableMessage)}} </h2>-->
+  <!--</div>-->
+  <!--<div *ngIf="!message">-->
+  <!--<h4 style="color: darkred">No message yet!</h4>-->
+  <!--</div>-->
+  <!--<button [disabled]="!message" class="button3" (click)="send()"><h1>Send Message</h1></button>-->
+  <!--<h4 style="color: darkblue"> click "morse" button in less then a 120 ms for . and longer for - </h4>-->
+  <!--<h4 style="color: darkblue"> click "next" to go to next letter</h4>-->
+  <!--<h4 style="color: darkblue"> click "space" to go to next word</h4>-->
+  <!--<h4 style="color: darkblue"> click "clear" to remove all</h4>-->
+  <!--<h4 style="color: darkblue"> click "send" to broadcast message</h4>-->
+
+  <!--</div>-->
+
+
+</div>

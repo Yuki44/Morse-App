@@ -1,0 +1,45 @@
+.button1 {
+  background-color: #4CAF50;
+  margin: 4px 2px;
+  border-radius: 8px;
+  margin-right: 12px;
+  padding: 10px;
+  width: 80px;
+}
+
+.button2 {
+  background-color: darkblue;
+  margin: 4px 2px;
+  padding: 10px;
+  border-radius: 8px;
+  margin-right: 4px;
+  width: 80px;
+  color: whitesmoke;
+}
+
+.button3 {
+  margin: 4px 2px;
+  padding: 10px;
+  border-radius: 8px;
+  margin-right: 4px;
+  width: 200px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  width: 100%
+}
