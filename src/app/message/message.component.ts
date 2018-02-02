@@ -1,13 +1,33 @@
-import {Component} from '@angular/core';
+import {AfterViewChecked, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MessageService} from './shared/message.service';
 import {Observable} from 'rxjs/Observable';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/merge';
 
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
-  styleUrls: ['./message.component.css']
+  styleUrls: ['./message.component.css'],
+  animations: [
+    trigger('flyInOut', [
+      state('in', style({transform: 'translateY(0)'})),
+      transition('void => *', [
+        style({transform: 'translateY(100%)'}),
+        animate(500)
+      ]),
+      transition('* => void', [
+        animate(500, style({transform: 'translateY(-100%)'}))
+      ])
+    ])
+  ]
 })
-export class MessageComponent {
+export class MessageComponent implements OnInit, AfterViewChecked {
+  @ViewChild('myInputField') myInputField: any;
+  textToMorseMessage: string;
+
   title = 'Morse App';
   messages: any[];
   messagesPaged: Observable<any[]>;
@@ -17,18 +37,62 @@ export class MessageComponent {
   textActivated = false;
   humanReadableMessage = '';
   time: number;
+  messageType = 'Text';
+  morseAlphabet = this.getMorseAlphabet();
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   constructor(private messageService: MessageService) {
-    this.messageService.getMessagesLastByLimit(3).subscribe(messages => {
-      this.messages = messages;
+    this.messageService.getMessagesLastByLimit(50).subscribe(messages => {
+      this.messages = messages.reverse();
       this.latest = messages[0];
     });
+    this.scrollToBottom();
   }
 
+  ngOnInit() {
+    this.scrollToBottom();
+  }
   convertMessage(message: string): string {
     return this.messageService.convertToText(message);
   }
 
+  getMorseAlphabet() {
+    return {
+      'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
+      'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+      'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
+      'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+      'Y': '-.--', 'Z': '--..', ' ': '/',
+
+      '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-',
+      '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.'
+    };
+  }
+
+  convertToMorse(text: string): string {
+    let morse = '';
+    const words = text.toString();
+    for (const word of words) {
+      const chars = word;
+      for (const char of chars) {
+        const letter = this.morseAlphabet[char.toUpperCase()];
+        if (letter !== undefined) {
+          morse += letter;
+        } else {
+          morse += char;
+        }
+      }
+      morse += ' ';
+    }
+    return this.message = morse;
+  }
+
+  sendCheck() {
+    if (this.textToMorseMessage) {
+      this.send();
+    } else {
+    }
+  }
   send() {
     const time = new Date();
     this.messageService.addMessage(time, this.message.trim()).then(done => {
@@ -51,6 +115,7 @@ export class MessageComponent {
       }
       this.time = -1;
     }
+    this.scrollToBottom();
   }
 
   space() {
@@ -66,16 +131,51 @@ export class MessageComponent {
   clear() {
     this.message = '';
     this.humanReadableMessage = '';
+    this.textToMorseMessage = '';
   }
 
   normalTextActive() {
     this.morseActivated = false;
     this.textActivated = true;
+    this.clear();
+    this.scrollToBottom();
   }
 
   morseActive() {
     this.textActivated = false;
     this.morseActivated = true;
+    this.clear();
+    this.scrollToBottom();
+  }
+
+  cancelMessage() {
+    this.morseActivated = false;
+    this.textActivated = false;
+    this.clear();
+  }
+
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+    this.myInputField.nativeElement.focus();
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch (err) {
+
+    }
+  }
+
+  changed(string, event) {
+    if (event.srcElement.checked) {
+      this.messageType = string;
+    }
+    if (this.messageType === 'Text') {
+      this.message = this.textToMorseMessage;
+      this.convertToMorse(this.message);
+    }
   }
 
 
