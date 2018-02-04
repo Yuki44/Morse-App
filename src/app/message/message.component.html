@@ -1,4 +1,3 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <div *ngIf="!messages">
   <img src="https://cdn.dribbble.com/users/137792/screenshots/3428761/mikaflakes_mailicon_2.gif" style="max-width: 900px;
     max-height: 900px; position:absolute;
@@ -21,20 +20,57 @@
         height="30" class="d-inline-block align-self-center" alt="">
     </a>
   </nav>
-  <div class="container mb-3 mt-3">
+
+
+  <!-- The Modal -->
+  <div class="modal" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">How to Morse:</h5>
+          <button type="button" class="close" data-dismiss="modal"
+                  onclick="document.getElementById('myModal').style.display = 'none'">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>You may click the 'Morse Click' button, and whether you need a short dot . or a long dash - you click it
+            for a short or a longer time</p>
+          <p>But you can also use the keyboard to create your message (Space for Morsing and Arrow Keys for the
+            rest)</p>
+          <img src="../../assets/keyboard.jpg" style="max-height: 120px; max-width: 120px; display: block;
+    margin-left: auto;
+    margin-right: auto; padding-bottom: 10px">
+          <img src="https://i.makeagif.com/media/11-05-2015/QMAW39.gif"
+               style="display: block; margin-left: auto; margin-right: auto">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" id="modalButton"
+                  (keydown.enter)="document.getElementById('myModal').style.display = 'none'"
+                  onclick="document.getElementById('myModal').style.display = 'none'" data-dismiss="modal">Morse it!
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container mb-3 mt-3 col-lg-11">
     <div class="row">
-      <div class="col-md-8
-">
+      <div class="col-lg-8">
         <div class="card">
           <h4 class="card-header">Latest Messages:</h4> <img
           src="https://cdn1.iconfinder.com/data/icons/touch-gestures-2/24/Scroll-Fast-256.png" style=" max-height: 40px; max-width: 40px;position:absolute;
     top:0; bottom:0; right:0;
     margin:auto;opacity: 0.4;
     filter: alpha(opacity=40);">
-          <div class="card-body" style="padding-right: 40px">
+          <div class=
+                 "card-body" style="padding-right: 40px">
             <div #scrollMe style="overflow: scroll; height: 280px;">
               <div *ngFor="let message of messages " [@flyInOut]="message.state" class="card-body mb-2" style="border-radius: 40px;
-    border: 0.5px solid #d8d8d8;
+    border: 1px solid #d8d8d8;
     margin-bottom: 0px;"><p *ngIf="message.message == ''" style="opacity: 0.4;
                             filter: alpha(opacity=40);">(Empty Message)</p>
                 <h4 class="card-title" style="margin-bottom: 2px;
@@ -62,7 +98,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-lg-4">
         <h4>International Morse Code</h4>
         <img src="http://www.codebug.org.uk/assets/steps/540/image_1.png" class="img-fluid">
       </div>
@@ -80,12 +116,15 @@
         <div class="card-body text-info">
           <div class="row" style="margin-bottom: 20px;">
             <div class="col-md-2">
-              <button type="button" class="btn btn-info" id="morseButton" autofocus (keydown.shift)="space()"
-                      (keydown.backspace)="clear()" (keydown.enter)="next()" (keydown.space)="morse(true);"
+              <button type="button" #myMorseButton class="btn btn-info" id="morseButton" autofocus
+                      (keydown.arrowDown)="space()" (keydown.arrowUp)="sendCheck()"
+                      (keydown.arrowLeft)="clear()" (keydown.arrowRight)="next()" (keydown.space)="morse(true);"
                       (keyup.space)="morse(false);" (mousedown)="morse(true);" (mouseup)="morse(false);">Morse Click
               </button>
             </div>
+
             <div class="col-md-1">
+
               <button type="button" class="btn btn-info btn-outline-secondary"
                       onclick="document.getElementById('morseButton').focus()" (click)="next();">Next
               </button>
@@ -100,12 +139,23 @@
                       (click)="clear();">Clear
               </button>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
               <button type="button" class="btn btn-outline-success" *ngIf="message && humanReadableMessage.trim()"
                       onclick="document.getElementById('morseButton').focus()" (click)="send()">Send the current message
               </button>
             </div>
+            <div class="col-md-1">
+              <button type="button" class="btn btn-info btn-outline-secondary"
+                      onclick="document.getElementById('myModal').style.display = 'block'">How to?
+              </button>
+            </div>
+            <div class="col-md-1">
+              <button type="button" class="btn btn-info btn-outline-secondary"
+                      onclick="document.getElementById('morseButton').focus()">Use Keyboard
+              </button>
+            </div>
           </div>
+
           <h2 class="card-title text-dark">Morse Message</h2>
           <h2 class="card-title text-dark">{{message}}</h2>
           <h2 class="card-title" style="margin-bottom: 20px;">Human Readable</h2>
@@ -116,14 +166,14 @@
                 style="color: black; font-size: larger">.</b> (Space key)&nbsp;</p>
               <p class="card-text text-secondary">and longer for <b style="color: black; font-size: larger">-</b>&nbsp;
               </p>
-              <p class="card-text text-secondary">Click "Send" to broadcast message</p>
+              <p class="card-text text-secondary">Click "Send" to broadcast message (Up Arrow key)</p>
             </div>
             <div class="col-md-6">
-              <p class="card-text text-secondary">Click "Next" to go to next letter (Enter key)&nbsp;</p>
-              <p class="card-text text-secondary">Click "Space" to go to next word (Shift key)&nbsp;</p>
-              <p class="card-text text-secondary">Click "Clear" to remove all&nbsp;(BackSpace key)</p>
+              <p class="card-text text-secondary">Click "Next" to go to next letter (Right Arrow key)&nbsp;</p>
+              <p class="card-text text-secondary">Click "Space" to go to next word (Down Arrow key)&nbsp;</p>
+              <p class="card-text text-secondary">Click "Clear" to remove all&nbsp;(Left Arrow key)</p>
             </div>
-        </div>
+          </div>
         </div>
       </div>
     </div>
@@ -157,7 +207,7 @@
             <input type="text" class="form-control" autofocus [(ngModel)]="textToMorseMessage"
                    (input)="changed('Text', $event)" id="myInput" #myInputField (keyup.enter)="sendCheck()"
                    placeholder="Message">
-            </div>
+          </div>
           <h2 class="card-title" style="margin-bottom: 20px;">Morse Message</h2>
           <h2 class="card-title" style="margin-bottom: 20px;"> {{message}} </h2>
 

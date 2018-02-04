@@ -26,6 +26,9 @@ import 'rxjs/add/operator/merge';
 })
 export class MessageComponent implements OnInit, AfterViewChecked {
   @ViewChild('myInputField') myInputField: any;
+  @ViewChild('myMorseButton') myMorseButton: any;
+
+
   textToMorseMessage: string;
 
   title = 'Morse App';
@@ -39,6 +42,8 @@ export class MessageComponent implements OnInit, AfterViewChecked {
   time: number;
   messageType = 'Text';
   morseAlphabet = this.getMorseAlphabet();
+  activeModal = false;
+
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   constructor(private messageService: MessageService) {
@@ -47,11 +52,15 @@ export class MessageComponent implements OnInit, AfterViewChecked {
       this.latest = messages[0];
     });
     this.scrollToBottom();
+    // if (onkeydown(KeyboardEvent) => {
+    //   this.focusFieldsInView();
+    //  }
   }
 
   ngOnInit() {
     this.scrollToBottom();
   }
+
   convertMessage(message: string): string {
     return this.messageService.convertToText(message);
   }
@@ -93,6 +102,7 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     } else {
     }
   }
+
   send() {
     const time = new Date();
     this.messageService.addMessage(time, this.message.trim()).then(done => {
@@ -139,6 +149,7 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     this.textActivated = true;
     this.clear();
     this.scrollToBottom();
+    this.focusFieldsInView();
   }
 
   morseActive() {
@@ -146,6 +157,7 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     this.morseActivated = true;
     this.clear();
     this.scrollToBottom();
+    this.focusFieldsInView();
   }
 
   cancelMessage() {
@@ -154,11 +166,23 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     this.clear();
   }
 
+  focusFieldsInView() {
+    try {
+      if (this.morseActivated) {
+        this.myMorseButton.nativeElement.focus();
+      } else {
+        this.myInputField.nativeElement.focus();
+      }
+    } catch (err) {
+
+    }
+  }
 
   ngAfterViewChecked() {
     this.scrollToBottom();
-    this.myInputField.nativeElement.focus();
+    this.focusFieldsInView();
   }
+
 
   scrollToBottom(): void {
     try {
@@ -166,6 +190,7 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     } catch (err) {
 
     }
+
   }
 
   changed(string, event) {
