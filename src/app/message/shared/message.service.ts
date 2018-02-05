@@ -21,10 +21,10 @@ export class MessageService {
     return this.db.collection('messages', ref => ref.orderBy('time').limit(limit).startAfter(startAt.time)).valueChanges();
   }
 
-  addMessage(time: Date, message: any): Promise<any> {
-    if (time && this.messageOk(message)) {
+  addMessage(user: any, time: Date, message: any): Promise<any> {
+    if (user && time && this.messageOk(message)) {
       const messageCollection = this.db.collection<any>('messages');
-      return messageCollection.add({time: time, message: message});
+      return messageCollection.add({user: user, time: time, message: message});
     } else {
       return new Promise((resolve, reject) => {
         reject('Value is not a valid morse code');

@@ -45,6 +45,24 @@
     </div>
   </ng-template>
 
+
+  <ng-template #contentUser let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title">Set a name:</h5>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>You must set your username first</p>
+      <input type="text" class="form-control" id="userInput" [(ngModel)]="user" placeholder="Name">
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-success" (click)="c('Close click')" *ngIf="user">Looks Good</button>
+    </div>
+  </ng-template>
+
+
   <div class="container mb-3 mt-3 col-lg-11">
     <div class="row">
       <div class="col-lg-8">
@@ -66,25 +84,37 @@
                 <p class="card-text">{{message.message}}</p>
                 <p class="card-text" style="margin-bottom: -9px;
     margin-top: -16px;">
-                  <small class="text-muted">{{message.time | date:'EEEE, h:mm a'}}</small>
+                  <small class="text-muted">Sent by <b style="color: black; font-size: small">{{message.user}}</b> on
+                    {{message.time | date:'EEEE, h:mm a'}}
+                  </small>
                 </p>
               </div>
             </div>
             <div class="row mt-4">
-              <div class="col-md-5">
+              <div class="col-md-4" *ngIf="user">
                 <button (click)="morseActive()" onclick="blur()" class="btn btn-info" style="color: #ffffff;">Write a
                   Morse message!
                 </button>
               </div>
-              <div class="col-md-5">
+              <div class="col-md-4" *ngIf="user">
                 <button (click)="normalTextActive()" onclick="blur()" class="btn btn-success" style="color: #ffffff;">
                   Write a Text
                   message!
                 </button>
               </div>
-            </div>
+              <div class="col-md-4" *ngIf="!user">
+                <button (click)="open(contentUser)" class="btn btn-info btn-outline-secondary">
+                  You must set your name first
+                </button>
+              </div>
+              <div class="col-md-1" *ngIf="user">
+                <button (click)="cancelMessage(contentUser)" class="btn btn-info btn-outline-secondary">
+                  Change name
+                </button>
+              </div>
           </div>
         </div>
+      </div>
       </div>
       <div class="col-lg-4">
         <h4>International Morse Code</h4>

@@ -29,6 +29,7 @@ import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 export class MessageComponent implements OnInit, AfterViewChecked {
   @ViewChild('myInputField') myInputField: any;
   @ViewChild('myMorseButton') myMorseButton: any;
+  @ViewChild('userInput') userInput: any;
 
 
   textToMorseMessage: string;
@@ -45,6 +46,7 @@ export class MessageComponent implements OnInit, AfterViewChecked {
   messageType = 'Text';
   morseAlphabet = this.getMorseAlphabet();
   closeResult: string;
+  user = '';
 
 
 
@@ -56,9 +58,6 @@ export class MessageComponent implements OnInit, AfterViewChecked {
       this.latest = messages[0];
     });
     this.scrollToBottom();
-    // if (onkeydown(KeyboardEvent) => {
-    //   this.focusFieldsInView();
-    //  }
   }
 
   ngOnInit() {
@@ -110,7 +109,8 @@ export class MessageComponent implements OnInit, AfterViewChecked {
 
   send() {
     const time = new Date();
-    this.messageService.addMessage(time, this.message.trim()).then(done => {
+    const user = this.user;
+    this.messageService.addMessage(user, time, this.message.trim()).then(done => {
       console.log('saved');
     }, err => {
       console.log(err);
@@ -165,10 +165,13 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     this.focusFieldsInView();
   }
 
-  cancelMessage() {
+  cancelMessage(contentUser) {
     this.morseActivated = false;
     this.textActivated = false;
     this.clear();
+    if (contentUser) {
+      this.open(contentUser);
+    }
   }
 
   focusFieldsInView() {
@@ -215,6 +218,7 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+
   }
 
   private getDismissReason(reason: any): string {

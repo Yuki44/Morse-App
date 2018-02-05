@@ -6,11 +6,11 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyDulGWn2FGvZ-4YoJ_17SfdtJjZ93S2AHc',
-    authDomain: 'project2018week5.firebaseapp.com',
-    databaseURL: 'https://project2018week5.firebaseio.com',
-    projectId: 'project2018week5',
-    storageBucket: 'project2018week5.appspot.com',
-    messagingSenderId: '486657284017'
+    apiKey: 'AIzaSyCwmYam0Iq-WgkI7RYDucGMRRSS8bbMVhI',
+    authDomain: 'chatapp-64263.firebaseapp.com',
+    databaseURL: 'https://chatapp-64263.firebaseio.com',
+    projectId: 'chatapp-64263',
+    storageBucket: 'chatapp-64263.appspot.com',
+    messagingSenderId: '337856405044'
   }
 };
