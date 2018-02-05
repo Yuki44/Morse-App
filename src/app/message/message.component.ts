@@ -6,6 +6,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/merge';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-message',
@@ -42,11 +44,13 @@ export class MessageComponent implements OnInit, AfterViewChecked {
   time: number;
   messageType = 'Text';
   morseAlphabet = this.getMorseAlphabet();
-  activeModal = false;
+  closeResult: string;
+
+
 
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
-  constructor(private messageService: MessageService) {
+  constructor(private messageService: MessageService, private modalService: NgbModal) {
     this.messageService.getMessagesLastByLimit(50).subscribe(messages => {
       this.messages = messages.reverse();
       this.latest = messages[0];
@@ -102,6 +106,7 @@ export class MessageComponent implements OnInit, AfterViewChecked {
     } else {
     }
   }
+
 
   send() {
     const time = new Date();
@@ -202,6 +207,26 @@ export class MessageComponent implements OnInit, AfterViewChecked {
       this.convertToMorse(this.message);
     }
   }
+
+
+  open(content) {
+    this.modalService.open(content).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
 
 
 }

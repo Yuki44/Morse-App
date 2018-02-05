@@ -22,40 +22,28 @@
   </nav>
 
 
-  <!-- The Modal -->
-  <div class="modal" id="myModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <!-- Modal content -->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">How to Morse:</h5>
-          <button type="button" class="close" data-dismiss="modal"
-                  onclick="document.getElementById('myModal').style.display = 'none'">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>You may click the 'Morse Click' button, and whether you need a short dot . or a long dash - you click it
-            for a short or a longer time</p>
-          <p>But you can also use the keyboard to create your message (Space for Morsing and Arrow Keys for the
-            rest)</p>
-          <img src="../../assets/keyboard.jpg" style="max-height: 120px; max-width: 120px; display: block;
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title">How to Morse:</h5>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>You may click the 'Morse Click' button, and whether you need a short dot . or a long dash - you click it
+        for a short or a longer time</p>
+      <p>But you can also use the keyboard to create your message (Space for Morsing and Arrow Keys for the
+        rest)</p>
+      <img src="../../assets/keyboard.jpg" style="max-height: 120px; max-width: 120px; display: block;
     margin-left: auto;
     margin-right: auto; padding-bottom: 10px">
-          <img src="https://i.makeagif.com/media/11-05-2015/QMAW39.gif"
-               style="display: block; margin-left: auto; margin-right: auto">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-info" id="modalButton"
-                  (keydown.enter)="document.getElementById('myModal').style.display = 'none'"
-                  onclick="document.getElementById('myModal').style.display = 'none'" data-dismiss="modal">Morse it!
-          </button>
-
-        </div>
-      </div>
+      <img src="https://i.makeagif.com/media/11-05-2015/QMAW39.gif"
+           style="display: block; margin-left: auto; margin-right: auto">
     </div>
-  </div>
-
+    <div class="modal-footer">
+      <button type="button" class="btn btn-info" (click)="c('Close click')">Morse it!</button>
+    </div>
+  </ng-template>
 
   <div class="container mb-3 mt-3 col-lg-11">
     <div class="row">
@@ -146,7 +134,7 @@
             </div>
             <div class="col-md-1">
               <button type="button" class="btn btn-info btn-outline-secondary"
-                      onclick="document.getElementById('myModal').style.display = 'block'">How to?
+                      (click)="open(content)">How to?
               </button>
             </div>
             <div class="col-md-1">
@@ -211,7 +199,7 @@
           <h2 class="card-title" style="margin-bottom: 20px;">Morse Message</h2>
           <h2 class="card-title" style="margin-bottom: 20px;"> {{message}} </h2>
 
-          <p class="card-text text-secondary">Click "Send" or press "Enter" to broadcast message</p>
+          <p class="card -text text-secondary">Click "Send" or press "Enter" to broadcast message</p>
         </div>
       </div>
     </div>
